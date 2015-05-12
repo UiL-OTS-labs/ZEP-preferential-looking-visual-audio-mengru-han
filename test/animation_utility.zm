@@ -1,0 +1,212 @@
+record AnimationFrame
+{
+	real x;
+	string x_type;
+
+	real y;
+	string y_type;
+
+	real width;
+	string width_type;
+
+	real height;
+	string height_type;
+
+	real rotation;
+	real alpha;
+	string image;
+}
+
+record Point2D
+{
+	real x;
+	real y;
+}
+
+void update_animation(ImageShape animated, AnimationFrame[] animation, AnimationFrame origin)
+{		
+	if(animated.relative_frame < animation.size)
+		apply_frame_on_from(animation[animated.relative_frame], animated, origin);
+	
+}
+
+int animate_with_at(ImageShape animated, AnimationFrame[] animation, time tref)
+{
+	animated.abort();
+	animated.start(tref);
+
+	int number_of_animation_frames = animation.size;
+	int expected_animation_finish_frame = animated.expected_start_frame + number_of_animation_frames;
+
+	return expected_animation_finish_frame;
+}
+
+AnimationFrame make_snapshot(ImageShape animated)
+{
+	AnimationFrame snapshot;
+
+	snapshot.x = animated.x;
+	snapshot.y = animated.y;
+	snapshot.width = animated.width;
+	snapshot.height = animated.height;
+	snapshot.image = animated.image;
+	snapshot.rotation = animated.rotation;
+	snapshot.alpha = animated.alpha;
+
+	snapshot.image = animated.image;
+
+	return snapshot;
+}
+
+bool is_being_animated(Shape animated, AnimationFrame[] animation)
+{
+	if(animated.expected_start_time > now())
+		return false;
+	if(animated.relative_frame >= 0 && animated.relative_frame < animation.size)
+		return true;
+	return false;
+}
+
+void apply_frame_on_from(AnimationFrame transform, ImageShape animated, AnimationFrame origin)
+{
+	AnimationFrame absolute_change = absolute_to(transform, origin);
+
+	AnimationFrame rotated_absolute_change = correct_for_rotation(absolute_change, origin, animated);
+
+	AnimationFrame related_change = relate_to(rotated_absolute_change, origin);
+
+	set_to(animated, related_change);
+}
+
+AnimationFrame correct_for_rotation(AnimationFrame absolute_change, AnimationFrame origin, ImageShape animated)
+{
+	real total_rotation_rad = absolute_change.rotation + origin.rotation;
+
+	if(total_rotation_rad == 0)
+		return absolute_change;
+
+	Point2D rotational_correction;
+	
+	Point2D rotational_points;
+	rotational_points.x = animated.offset_x;
+	rotational_points.y = animated.offset_y;
+
+	Point2D origin_point;
+	origin_point.x = origin.x;
+	origin_point.y = origin.y;
+
+	Point2D rotated_origin_point;
+	rotated_origin_point = rotate_coordinates_with_around(origin_point, -absolute_change.rotation, rotational_points);
+	
+	rotational_correction.x = origin.x - rotated_origin_point.x;
+	rotational_correction.y = origin.y - rotated_origin_point.y;
+
+	Point2D normal_shift;
+	normal_shift.x = absolute_change.x;
+	normal_shift.y = absolute_change.y;
+
+	Point2D rotated_normal_shift;
+	Point2D zero;
+	rotated_normal_shift = rotate_coordinates_with_around(normal_shift, -total_rotation_rad, zero);
+
+	absolute_change.x = rotated_normal_shift.x - rotational_correction.x;
+	absolute_change.y = rotated_normal_shift.y - rotational_correction.y;
+
+	return absolute_change;
+}
+
+AnimationFrame absolute_to(AnimationFrame transform, AnimationFrame origin)
+{
+	AnimationFrame absolute_change;
+
+	if(transform.x_type == "%")
+		absolute_change.x = origin.x * (transform.x/100);
+	else if(transform.x_type == "px")
+		absolute_change.x = transform.x;
+	else
+		println("Animation error: x_type was ill defined: " + transform.x_type);
+
+	if(transform.y_type == "%")
+		absolute_change.y = origin.y * (transform.y/100);
+	else if(transform.y_type == "px")
+		absolute_change.y = transform.y;
+	else
+		println("Animation error: y_type was ill defined: " + transform.y_type);
+
+	if(transform.width_type == "%")
+		absolute_change.width = origin.width * (transform.width/100) ;
+	else if(transform.width_type == "px")
+		absolute_change.width = transform.width;
+	else
+		println("Animation error: width_type was ill defined: " + transform.width_type);
+
+	if(transform.height_type == "%")
+		absolute_change.height = origin.height * (transform.height/100);
+	else if(transform.height_type == "px")
+		absolute_change.height =  transform.height;
+	else
+		println("Animation error: height_type was ill defined: " + transform.height_type);
+
+	absolute_change.rotation = transform.rotation;
+
+	absolute_change.alpha = transform.alpha;
+
+	absolute_change.image = transform.image;
+
+	return absolute_change;
+}
+
+AnimationFrame relate_to(AnimationFrame absolute, AnimationFrame relevated)
+{
+	AnimationFrame related;
+	related.x = relevated.x + absolute.x;
+	related.y = relevated.y+ absolute.y;
+	related.width = relevated.width + absolute.width;
+	related.height = relevated.height + absolute.height;
+
+	related.rotation = relevated.rotation + absolute.rotation;
+	related.alpha = relevated.alpha + absolute.alpha;
+
+	if(absolute.image != "")
+		related.image = stimuli_dir() + "images/" + absolute.image;
+	else
+		related.image = relevated.image;
+
+	return related;
+}
+
+void set_to(ImageShape animated, AnimationFrame frame)
+{
+	animated.x = frame.x;
+	animated.y = frame.y;
+	animated.width = frame.width;
+	animated.height = frame.height;
+
+	animated.rotation = frame.rotation;
+	animated.alpha = frame.alpha;
+	animated.image = frame.image;
+}
+
+Point2D rotate_coordinates_with_around(Point2D coordinates, real rotation, Point2D rotational_points)
+{
+	real x = coordinates.x;
+	real y = coordinates.y;
+
+	real a = rotational_points.x;
+	real b = rotational_points.y;
+
+	x = x - a;
+	y = y - b;
+	
+	// result.x = x * cos(rotation) + y * -sin(rotation) + a - ( x * cos(rotation)) * a -  (  y * -sin(rotation) ) * b;
+	// result.y = x * sin(rotation) + y * cos(rotation) + b - (x * sin(rotation) ) * a - ( y * cos(rotation)) * b;
+
+	real x_r = x * cos(rotation) + y * -sin(rotation);
+	real y_r = x * sin(rotation) + y * cos(rotation);
+
+	Point2D result;
+	result.x = x_r + a;
+	result.y = y_r + b;
+
+	return result;
+}

@@ -1,0 +1,33 @@
+/******************************************************************************\
+FILE:           participant.zm
+AUTHOR:         Theo Veenker <theo.veenker@beexy.nl>
+ADAPTED BY:     -
+
+DESCRIPTION:
+
+Provides participant database record field create and check functions.
+
+
+HISTORY:
+2011-08-27 TV   Created as part of the standard Zep modules.
+
+\******************************************************************************/
+
+
+// Creates required participant record fields.
+void create_participant_fields()
+{
+	//expdb.participant.add_enum_field("left_button", "pos|neg");
+}
+
+
+// Checks current values of participant record fields.
+int check_participant_fields()
+{
+	// if (!expdb.participant.has_enum_field("left_button"))
+	// {
+	// 	print_error("Participant field 'left_button' needs to be set to either 'neg' or 'pos'!\n");
+	// 	return ERROR;
+	// } 
+    return OK;
+}

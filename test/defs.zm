@@ -1,0 +1,14 @@
+// Duration of the interval between two trials.
+const dur       INTERTRIAL_INTERVAL             = 0ms;
+
+const dur RESPONSE_DURATION = 0ms;
+
+const dur POST_FINISH_ANIMATION_DELAY = 500ms;
+
+const int DISTANCE_IMAGES_PX = 400;
+
+const dur TIME_BUFFER_FOR_PROCESSING = 10ms;
+
+const string ATTRACTOR_IMAGE = "frame000.png";
+const string ATTRACTOR_AUDIO = "baby_laugh5.wav";
+const string ATTRACTOR_ANIMATION = "attention_grabber.csv";

@@ -1,0 +1,39 @@
+/******************************************************************************\
+FILE:           std_baby_control_colors.zm
+AUTHOR:         Theo Veenker <theo.veenker@beexy.nl>
+ADAPTED BY:     -
+
+DESCRIPTION:
+
+Defines default colors for graphic elements on control page.
+
+For a list of predefined Zep color names see:
+  http://www.beexy.nl/zep -> Reference Manuals -> Color Names
+
+
+HISTORY:
+2011-08-31 TV   Created as part of the standard Zep modules.
+
+\******************************************************************************/
+
+
+// Colors used on control page etc.
+const color     CONTROL_COLOR                   =color:gainsboro;
+const color     CONTROL_CANVAS_COLOR            = color:chartreuse; //rgb:7FFF00	rgbi:127/255/0	color:chartreuse
+const color     CONTROL_INFO_COLOR              = color:gainsboro;
+const color     CONTROL_INFO_TEXT_COLOR         = color:gray80;
+const color     CONTROL_INFO_TEXT_ALERT_COLOR   = color:red;
+const color     CONTROL_STATE_TEXT_COLOR        = color:darkblue;
+const color     CONTROL_STATUS_TEXT_COLOR       = color:darkred;
+const color     CONTROL_MESSAGE_COLOR           = color:white;
+const color     CONTROL_MESSAGE_TEXT_COLOR      = color:gray80;
+const color     CONTROL_BUTTON_COLOR            = color:gray10;
+const color     CONTROL_BUTTON_TEXT_COLOR       = color:gray80;
+const color     CONTROL_INPUT_COLOR             = color:white;
+const color     CONTROL_INPUT_TEXT_COLOR        = color:gray80;
+const color     CONTROL_FRONT_LIGHT_COLOR       = color:red;
+const color     CONTROL_SIDE_LIGHT_COLOR        = color:red;
+const color     CONTROL_SPEAKER_COLOR           = color:gold;
+const color     CONTROL_COUNTER_ACTIVE_COLOR = color:red;
+const color     CONTROL_COUNTER_BACKGROUND_COLOR = color:black;
+const color     CONTROL_COUNTER_COLOR           = color:white;

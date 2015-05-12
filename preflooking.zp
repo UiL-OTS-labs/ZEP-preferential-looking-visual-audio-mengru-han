@@ -1,0 +1,63 @@
+requires 1.10;
+
+import baby_windows1;
+import std_entry_page1;
+import std_texts_en;
+import std_exit_page1;
+import std_pause_page;
+import std_blank_page;
+
+import test::task;
+
+Experiment experiment
+{
+    on_event:entry()
+    {        
+        if(check_participant_fields() == ERROR)
+                    terminate;
+        control.button_box.open();
+        control.button_box.output(0x02); // If necessary set parallel port line D0 to power button box device. (sometimes nesc. for laptop)
+        
+        show_test_windows();
+        control.set_image_copy(test_window1);
+    }
+
+    on_event:message()
+    {
+        // On Ctrl+F4 jump unconditionally to the thank-you part.
+        if (message_sender == control && message_arg == SYS_STOP)
+        {
+            control.mark_experiment_aborted();
+            thankyou.enter();
+        }
+    }
+
+
+    Part welcome
+    {
+        on_event:entry()
+        {
+            entry_page.set_text(WELCOME_TEXT);
+            entry_page.action(this, 0s);
+        }
+    }
+
+    Part familiarisation
+    {
+        on_event:entry()
+        {
+            test::load_stimuli(string(selected_group)+"_familiarisation_items.csv");
+            test::action(this);
+        }
+    }
+
+    Part thankyou
+    {
+        on_event:entry()
+        {
+            control.end_experiment();   // Check-in session.
+            exit_page.set_text(THANK_YOU_TEXT);
+            exit_page.action(this, 10s);
+        }
+    }
+}

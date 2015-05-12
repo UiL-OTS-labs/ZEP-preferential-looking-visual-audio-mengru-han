@@ -1,0 +1,48 @@
+
+// Item table record.
+record TestItem
+{
+    int             id;
+    Direction      expected_look;
+    
+    string      left_side_image;
+    string      right_side_image;
+
+    string      audio_stimulus;
+    
+    string      left_side_image_animation_start;
+    string      right_side_image_animation_start;
+    string      left_side_image_animation_finish;
+    string      right_side_image_animation_finish;
+    
+    dur duration;
+}
+
+// Test item table.
+//   index: item number
+TestItem[..] test_items;
+
+
+// Loads item table(s) from CSV file(s) in the stimuli folder.
+int load_stimuli(string filename)
+{
+    test_items.size = 0;
+
+    int err;
+
+    // Load data into test_items table.
+    err = test_items.load(stimuli_dir() + filename, 
+        true,           // if true, file contains a header row
+        1);             // number of lines to skip before header and data
+    if (err) return err;
+
+    return OK;
+}
+
+
+// Saves item table(s) as CSV file(s) in the script folder.
+void save_stimuli(string filename, string header)
+{
+    test_items.save(script_dir() + filename, 
+       header);
+}

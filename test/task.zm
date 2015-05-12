@@ -1,0 +1,50 @@
+import std_choose_1of2_page;
+
+import defs;
+import stimuli;
+import output;
+import test_page;
+
+
+Block task
+{
+    on_event:entry()
+    {
+        num_cycles = test_items.size;
+        test_page.setup();
+    }
+
+
+    on_event:exit()
+    {
+        test_page.cleanup();
+        test_output_save();
+    }
+
+
+    Trial trial
+    {
+        TestItem        item;   // current item
+        TestOutput      output;
+
+        on_event:entry()
+        {
+            item = test_items[task.cycle];
+
+             test_page.action(this, item, reference_time, task.cycle);
+        }
+
+        on_event:exit()
+        {
+            test_output_append(output);
+        }
+    }
+}
+
+
+void action(Part caller)
+{
+    // Activate the task. When the task is done, the registered caller
+    // (c.q. the main experiment object) will automatically be signalled.
+    task.enter(caller);
+}

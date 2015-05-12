@@ -1,0 +1,512 @@
+/******************************************************************************\
+FILE:           test_page.zm
+AUTHOR:         Theo Veenker <theo.veenker@beexy.nl>
+ADAPTED BY:     -
+
+DESCRIPTION:
+
+Provides a page object to show to the participant during test trials.
+It handles presenting the stimulus and recording the participant's response.
+
+
+HISTORY:
+2011-10-25 TV   Created.
+
+\******************************************************************************/
+
+import std_sound_output_device;
+import animation_utility;
+
+Page test_page
+{
+    TestItem    item;           // trial control parameters
+
+
+    init()
+    {
+        fill_pattern_color = TEST_PAGE_COLOR;
+    }
+
+
+    on_event:key_press()
+    {
+        if(input_key == KEY_Escape)
+            done(CONTINUE);
+        else
+            handle_special_key(this, input_key, input_modifiers);
+    }
+
+
+    on_event:message()
+    {
+        // Process button-box message. See setup() below.
+        response.process_hit(event_time);
+    }
+
+
+    VerticalLayout layout
+    {
+        init()
+        {
+            options = LAYOUT_ATTACH_LEFT | LAYOUT_ATTACH_RIGHT;
+            //options = LAYOUT_STRETCH_ITEMS;
+        }
+
+        CanvasGadget canvas
+        {
+            init()
+            {
+                size = display_device.head_width(test_window1.head), display_device.head_height(test_window1.head);
+                offset_x = floor(width / 2);
+                offset_y = floor(height / 2);
+            }
+
+            ImageShape left_image
+            {
+                bool repeat;
+
+                init()
+                {
+                    is_visible = true;
+                }
+
+                void load(string filepath)
+                {
+                    image = filepath;
+    
+                    width = floor(image_width);
+                    height = floor(image_height);
+                    calculate_offset();
+                    x = -DISTANCE_IMAGES_PX;
+                }
+
+                AnimationFrame origin;
+                AnimationFrame[..] animation;
+
+                int start_animation(string path_to_animation, time tref, bool repeat = false)
+                {
+                     is_visible = true;
+                    this.repeat = repeat;
+                    int expected_finish_frame;
+                    animation.load(path_to_animation,true,1);
+                    expected_finish_frame = animate_with_at(this, animation, tref);
+                    return expected_finish_frame;
+                }
+
+                on_event:pre_start()
+                {
+                    is_visible=true;
+                    origin = make_snapshot(this);
+                }
+
+                on_event:pre_update()
+                {
+                    update_animation(this, this.animation, origin);
+
+                    if(repeat && relative_frame==animation.size-1)
+                       {
+                            this.abort();
+                            this.start(now());
+                       }
+
+                    calculate_offset();
+                }
+
+                void calculate_offset()
+                {
+                    //Here so there is not offset when increasing the width/height:
+                    offset_x = -width/2;
+                    offset_y = -height/2;
+                }
+
+                
+                on_event:pre_finish()
+                {
+                    if(is_being_animated(this, this.animation)) 
+                        println("Animation not yet complete: " + object_name);
+                    else
+                        animation.size = 0;                    
+                }
+            }
+
+            ImageShape middle_image
+            {
+                bool repeat;
+
+                init()
+                {
+                    is_visible = true;
+                }
+
+                void load(string filepath)
+                {
+                    image = filepath;
+    
+                    width = floor(image_width/3);
+                    height = floor(image_height/3);
+                    calculate_offset();
+                }
+
+                AnimationFrame origin;
+                AnimationFrame[..] animation;
+
+                int start_animation(string path_to_animation, time tref, bool repeat = false)
+                {
+                    is_visible = true;
+                    this.repeat = repeat;
+                    int expected_finish_frame;
+                    animation.load(path_to_animation,true,1);
+                    expected_finish_frame = animate_with_at(this, animation, tref);
+                    return expected_finish_frame;
+                }
+
+                on_event:pre_start()
+                {
+                    //is_visible=true;
+                    origin = make_snapshot(this);
+                }
+
+                on_event:pre_update()
+                {
+                    update_animation(this, this.animation, origin);
+
+                    if(repeat && relative_frame==animation.size-1)
+                       {
+                            this.abort();
+                            this.start(now());
+                       }
+
+                    calculate_offset();
+                }
+
+                void calculate_offset()
+                {
+                    //Here so there is not offset when increasing the width/height:
+                    offset_x = -width/2;
+                    offset_y = -height/2;
+                }
+
+                
+                on_event:pre_finish()
+                {
+                    if(is_being_animated(this, this.animation)) 
+                        println("Animation not yet complete: " + object_name);
+                    else
+                        animation.size = 0;                    
+                }
+
+                on_event:start()
+                {
+                    control.show_light_icon(FRONT_SIDE);
+                }
+
+                on_event:finish()
+                {
+                    control.hide_light_icon(FRONT_SIDE);
+                }
+            }
+
+            ImageShape right_image
+            {
+                bool repeat;
+
+                init()
+                {
+                    is_visible = true;
+                }
+
+                void load(string filepath)
+                {
+                    image = filepath;
+    
+                    width = floor(image_width);
+                    height = floor(image_height);
+                    calculate_offset();
+                    x = DISTANCE_IMAGES_PX;
+                }
+
+                AnimationFrame origin;
+                AnimationFrame[..] animation;
+
+                int start_animation(string path_to_animation, time tref, bool repeat = false)
+                {
+                     is_visible = true;
+                    this.repeat = repeat;
+                    int expected_finish_frame;
+                    animation.load(path_to_animation,true,1);
+                    expected_finish_frame = animate_with_at(this, animation, tref);
+                    return expected_finish_frame;
+                }
+
+                on_event:pre_start()
+                {
+                    is_visible=true;
+                    origin = make_snapshot(this);
+                }
+
+                on_event:pre_update()
+                {
+                    update_animation(this, this.animation, origin);
+
+                    if(repeat && relative_frame==animation.size-1)
+                       {
+                            this.abort();
+                            this.start(now());
+                       }
+
+                    calculate_offset();
+                }
+
+                void calculate_offset()
+                {
+                    //Here so there is not offset when increasing the width/height:
+                    offset_x = -width/2;
+                    offset_y = -height/2;
+                }
+
+                
+                on_event:pre_finish()
+                {
+                    if(is_being_animated(this, this.animation)) 
+                        println("Animation not yet complete: " + object_name);
+                    else
+                        animation.size = 0;                    
+                }
+            }
+        }
+
+        void load_images()
+        {
+            string image_path = stimuli_dir() + "images/";
+            canvas.left_image.load(image_path + item.left_side_image);
+            canvas.middle_image.load(image_path + ATTRACTOR_IMAGE);
+            canvas.right_image.load(image_path + item.right_side_image);
+        }
+
+        time start_middle_image(time t)
+        {
+            canvas.middle_image.start_animation(stimuli_dir() + "animations/" + ATTRACTOR_ANIMATION, t, true);
+            return canvas.middle_image.expected_start_time;
+        }
+
+        time stop_middle_image(time t)
+        {
+            canvas.middle_image.stop(t);
+            canvas.middle_image.is_visible = false;
+            set_to(canvas.middle_image, canvas.middle_image.origin);
+            return canvas.middle_image.expected_finish_time;
+        }
+
+        time start_side_images(time t)
+        {
+            initiate_start_animation_side_images(t);
+             return canvas.middle_image.expected_start_time;
+        }
+
+        void initiate_start_animation_side_images(time t)
+        {
+            if(item.left_side_image_animation_start != "")
+                canvas.left_image.start_animation(stimuli_dir()+"animations/"+item.left_side_image_animation_start,t);
+            else
+                canvas.left_image.start(t);
+
+            if(item.right_side_image_animation_start != "")
+                canvas.right_image.start_animation(stimuli_dir()+"animations/"+item.right_side_image_animation_start,t);
+            else
+                canvas.right_image.start(t);
+        }
+
+        int initiate_any_finish_animation_side_images()
+        {
+            int left_end_frame;
+            int right_end_frame;
+            if(item.left_side_image_animation_finish != "")
+                left_end_frame = canvas.left_image.start_animation(stimuli_dir()+"animations/"+item.left_side_image_animation_finish,now());
+            if(item.right_side_image_animation_finish != "")
+                right_end_frame = canvas.right_image.start_animation(stimuli_dir()+"animations/"+item.right_side_image_animation_finish,now());
+            return max(left_end_frame, right_end_frame);
+        }
+
+        void reset()
+        {
+            full_abort();
+
+            canvas.left_image.abort();
+            canvas.middle_image.abort();
+            canvas.right_image.abort();
+
+            canvas.left_image.is_visible = false;
+            canvas.middle_image.is_visible = false;
+            canvas.right_image.is_visible = false;
+
+             canvas.left_image.animation.size = 0;
+            canvas.middle_image.animation.size = 0;
+            canvas.right_image.animation.size = 0;
+
+            control.hide_light_icon(FRONT_SIDE + RIGHT_SIDE + LEFT_SIDE);
+        }
+    }
+
+    SoundChain audio
+    {
+        bool repeat;
+
+        SoundFile clip {}
+        SoundPlayback playback{}
+
+        void play(string filename, time tref, bool repeat = false)
+        {
+            abort();
+            this.repeat = repeat;
+
+            playback.device = sound_output_device;
+            clip.file = stimuli_dir() + "sounds/" + filename;
+            start(tref);
+        }
+
+         on_event:finish()
+         {
+            if(repeat)
+                start(event_time);
+         }
+    }
+
+    Response response
+    {
+        // Response data.
+        int     rt;             // response time [ms]
+
+
+        void clear()
+        {
+            rt = -9999;
+        }
+
+
+        void process_hit(time t)
+        {
+            HitType validity = hit(t);
+
+            // Accept the first hit in the response interval and end the 
+            // response interval.
+            if (validity == HIT_VALID)
+            {
+                rt = int(reaction_time(0));
+
+                time tref = layout.stop_middle_image(t+TIME_BUFFER_FOR_PROCESSING);
+                layout.start_side_images(tref);
+                control.start_clock(tref);
+                continue_timer.start(tref + item.duration);
+                control.show_light_icon(item.expected_look);
+                audio.play(item.audio_stimulus, t, false);
+
+                ignore_remaining_hits();
+                stop();
+            }
+            else if (validity == HIT_TOO_EARLY || validity == HIT_TOO_LATE)
+            {
+                // False alarm. Deal with this if desired.
+            }
+        }
+    }
+
+    Timer continue_timer
+    {
+        on_event:expire()
+        {
+            int frame_end = layout.initiate_any_finish_animation_side_images();
+            if(frame_end == 0)
+                done(CONTINUE);
+            else
+                continue_timer_after_finish_animations.start(display_device.frame_time(frame_end) + POST_FINISH_ANIMATION_DELAY);
+        }
+    }
+
+    Timer continue_timer_after_finish_animations
+    {
+        on_event:expire()
+        {
+            done(CONTINUE);
+        }
+    }
+
+    // Aborts any ongoing activity on this page and signals the initiator
+    // of the trial that we're done.
+    void done(int msgid)
+    {
+        // Just in case; abort presentation if still active.
+        layout.reset();
+        audio.abort();
+
+        control.end_clock(now());
+        
+        signal_target(msgid);   // tell caller we're done
+        target = null;
+
+        control.clear_status();
+    }
+
+
+    //==========================================================================
+
+
+    // Performs preparatory work required before using this page.
+    void setup()
+    {
+        control.begin_clock(true);
+        control.show_lights_outline(true);
+    }
+
+
+    // Performs cleaning up if necessary.
+    void cleanup()
+    {
+        control.button_box.disable_buttons();
+        control.target = null;
+
+        control.erase_clock();
+
+        control.show_lights_outline(false);
+        control.hide_light_icon(FRONT_SIDE + LEFT_SIDE + RIGHT_SIDE);
+    }
+
+
+    // Starts a trial.
+    void action(Object caller, TestItem it, time tref, int count=-1)
+    {
+        // Save the passed trial control parameters.
+        item = it;
+        layout.reset();
+        layout.load_images();
+
+        // Show this page (if not yet done) and make tref the trial start time.
+        tref = test_window1.show_test_page(this, tref + INTERTRIAL_INTERVAL);
+
+        // Reset response data.
+        response.clear();
+
+        //control.reset_clock();
+        control.begin_clock(true);
+
+        // Start fixation symbol and stimulus.
+        time stimonset = layout.start_middle_image(tref);
+
+        audio.play(ATTRACTOR_AUDIO, tref, true);
+
+        // Response interval starts at stimulus onset. Timeout after 
+        // RESPONSE_DURATION unless this duration is 0s or less.
+        response.start(stimonset);
+
+        // Enable button-box buttons 0 and 1 for resp. no(0) and yes(1).
+        control.target = this;
+        control.button_box.disable_buttons();
+        control.button_box.enable_all_buttons(1);
+        
+        // Update status line on control window. Cleared in done() above.
+        control.set_status(
+            string(item.id) + "  " + string(item.expected_look));
+
+        // Remember who to signal when the trial is over.
+        target = caller;
+    }
+}

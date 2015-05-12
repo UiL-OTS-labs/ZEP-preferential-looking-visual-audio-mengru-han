@@ -1,0 +1,6 @@
+### Test items ###
+id;expected_look;left_side_image;right_side_image;audio_stimulus;left_side_image_animation_start;right_side_image_animation_start;left_side_image_animation_finish;right_side_image_animation_finish;duration
+1;LEFT_SIDE;"example_image.svg";"example_image1.svg";"blick_first.wav";"jump.csv";"bounce.csv";"bounce.csv";"jump.csv";5s
+2;RIGHT_SIDE;"example_image.svg";"example_image1.svg";"blick_first.wav";"spin.csv";"";"";"spin.csv";7s
+3;LEFT_SIDE;"example_image.svg";"example_image1.svg";"blick_first.wav";"";"";"";"";7s
+4;RIGHT_SIDE;"example_image.svg";"example_image1.svg";"blick_first.wav";"";"";"";"";7s
