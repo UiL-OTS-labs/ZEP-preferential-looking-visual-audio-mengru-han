@@ -17,17 +17,34 @@ HISTORY:
 // Creates required participant record fields.
 void create_participant_fields()
 {
-	//expdb.participant.add_enum_field("left_button", "pos|neg");
+	expdb.participant.add_enum_field("condition", "ADS|IDS");
+	expdb.participant.add_enum_field("first_famil_picture", "ball|book");
 }
 
 
 // Checks current values of participant record fields.
 int check_participant_fields()
 {
-	// if (!expdb.participant.has_enum_field("left_button"))
-	// {
-	// 	print_error("Participant field 'left_button' needs to be set to either 'neg' or 'pos'!\n");
-	// 	return ERROR;
-	// } 
+	if (!expdb.participant.has_enum_field("condition") || (expdb.participant.get_enum_field("condition") != "ADS" && expdb.participant.get_enum_field("condition") != "IDS"))
+	{
+		print_error("Participant field 'conditon' needs to be set to either 'ADS' or 'IDS'!\n");
+		return ERROR;
+	} 
+	if (!expdb.participant.has_enum_field("first_famil_picture") || expdb.participant.get_enum_field("first_famil_picture") == "")
+	{
+		print_error("Participant field 'first_famil_picture' needs to be set to either 'ball' or 'book'!\n");
+		return ERROR;
+	} 
     return OK;
+}
+
+string get_audio_file_directory()
+{
+	string condition = expdb.participant.get_enum_field("condition");
+	string directory;
+	if(condition== "ADS")
+		directory = "ADS";
+	if(condition == "IDS")
+		directory = "IDS";
+	return directory +"/";
 }

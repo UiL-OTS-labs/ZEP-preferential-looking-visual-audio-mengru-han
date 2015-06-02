@@ -1,0 +1,4 @@
+### Test items ###;;;;;;;;;
+id;expected_look;left_side_image;right_side_image;audio_stimulus;left_side_image_animation_start;right_side_image_animation_start;left_side_image_animation_finish;right_side_image_animation_finish;duration
+1;RIGHT_SIDE;"ball.png";"book.png";"task_familiarization_boek.wav";"";"";"";"";8s
+2;LEFT_SIDE;"ball.png";"book.png";"task_familiarization_bal.wav";"";"";"";"";8s

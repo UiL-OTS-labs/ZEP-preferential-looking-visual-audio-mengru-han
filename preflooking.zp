@@ -42,15 +42,120 @@ Experiment experiment
         }
     }
 
+    Part
+    {
+        on_event:entry()
+        {
+            blank_page.action_auto(this, 500ms, 500ms);
+        }
+    }
+
     Part familiarisation
     {
         on_event:entry()
         {
-            test::load_stimuli(string(selected_group)+"_familiarisation_items.csv");
+            string first_item = expdb.participant.get_enum_field("first_famil_picture");
+            test::load_stimuli(stimuli_dir()+ first_item + "_familiarisation_items.csv");
             test::action(this);
         }
     }
 
+    Part
+    {
+        on_event:entry()
+        {
+            blank_page.action_auto(this, 500ms, 500ms);
+        }
+    }
+
+    Part salience
+    {
+        on_event:entry()
+        {
+            test::load_stimuli(get_test_items_directory()+"salience_items.csv");
+            test::action(this);
+        }
+    }
+
+    Part
+    {
+        on_event:entry()
+        {
+            blank_page.action_auto(this, 500ms, 500ms);
+        }
+    }
+
+    Part training
+    {
+        on_event:entry()
+        {
+            test::load_stimuli(get_test_items_directory()+"training_items.csv");
+            test::action(this);
+        }
+    }
+
+    Part
+    {
+        on_event:entry()
+        {
+            blank_page.action_auto(this, 500ms, 500ms);
+        }
+    }
+
+    Part test1
+    {
+        on_event:entry()
+        {
+            test::load_stimuli(get_test_items_directory()+"test1_items.csv");
+            test::shuffle_stimuli();
+            test::action(this);
+        }
+    }
+
+    Part
+    {
+        on_event:entry()
+        {
+            blank_page.action_auto(this, 500ms, 500ms);
+        }
+    }
+
+    Part reminder
+    {
+        on_event:entry()
+        {
+            test::load_stimuli(get_test_items_directory()+"reminder_items.csv");
+            test::shuffle_stimuli();
+            test::action(this);
+        }
+    }
+
+    Part
+    {
+        on_event:entry()
+        {
+            blank_page.action_auto(this, 500ms, 500ms);
+        }
+    }
+
+    Part test2
+    {
+        on_event:entry()
+        {
+            test::load_stimuli(get_test_items_directory()+"test2_items.csv");
+            test::shuffle_stimuli();
+            test::action(this);
+        }
+    }
+
+    Part
+    {
+        on_event:entry()
+        {
+            blank_page.action_auto(this, 500ms, 500ms);
+        }
+    }
+    
     Part thankyou
     {
         on_event:entry()

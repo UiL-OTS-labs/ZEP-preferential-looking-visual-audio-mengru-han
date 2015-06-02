@@ -18,9 +18,13 @@ HISTORY:
 enum TestGroup
 {
 	LEFT1MODI,
-	LEFT1BLICK,
+	LEFT1DOBOE,
 	RIGHT1MODI,
-	RIGHT1BLICK
+	RIGHT1DOBOE,
+	LEFT2MODI,
+	LEFT2DOBOE,
+	RIGHT2MODI,
+	RIGHT2DOBOE
 }
 
 
@@ -29,4 +33,9 @@ int assign_participant_to_group()
 {
     // Assign to first (i.e default) group.
     return select_group_default();
+}
+
+string get_test_items_directory()
+{
+	return stimuli_dir() + string(selected_group) + "/";
 }

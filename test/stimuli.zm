@@ -31,7 +31,7 @@ int load_stimuli(string filename)
     int err;
 
     // Load data into test_items table.
-    err = test_items.load(stimuli_dir() + filename, 
+    err = test_items.load(filename, 
         true,           // if true, file contains a header row
         1);             // number of lines to skip before header and data
     if (err) return err;
@@ -39,6 +39,11 @@ int load_stimuli(string filename)
     return OK;
 }
 
+int shuffle_stimuli()
+{
+    test_items.shuffle(0,-1);
+    return OK;
+}
 
 // Saves item table(s) as CSV file(s) in the script folder.
 void save_stimuli(string filename, string header)

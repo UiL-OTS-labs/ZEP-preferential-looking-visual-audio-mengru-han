@@ -22,6 +22,14 @@ Block task
     }
 
 
+    Part
+    {
+        on_event:entry()
+        {
+            blank_page.action_auto(this, 500ms, 500ms);
+        }
+    }
+
     Trial trial
     {
         TestItem        item;   // current item

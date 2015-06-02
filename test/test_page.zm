@@ -32,6 +32,8 @@ Page test_page
     {
         if(input_key == KEY_Escape)
             done(CONTINUE);
+        if(input_key == ' ')
+             response.process_hit(event_time);
         else
             handle_special_key(this, input_key, input_modifiers);
     }
@@ -278,9 +280,11 @@ Page test_page
         void load_images()
         {
             string image_path = stimuli_dir() + "images/";
-            canvas.left_image.load(image_path + item.left_side_image);
+            if(item.left_side_image != "")
+                canvas.left_image.load(image_path + item.left_side_image);
             canvas.middle_image.load(image_path + ATTRACTOR_IMAGE);
-            canvas.right_image.load(image_path + item.right_side_image);
+             if(item.right_side_image != "")
+                canvas.right_image.load(image_path + item.right_side_image);
         }
 
         time start_middle_image(time t)
@@ -339,9 +343,13 @@ Page test_page
             canvas.middle_image.is_visible = false;
             canvas.right_image.is_visible = false;
 
-             canvas.left_image.animation.size = 0;
+            canvas.left_image.animation.size = 0;
             canvas.middle_image.animation.size = 0;
             canvas.right_image.animation.size = 0;
+
+            canvas.left_image.image = "";
+            canvas.middle_image.image = "";
+            canvas.right_image.image = "";
 
             control.hide_light_icon(FRONT_SIDE + RIGHT_SIDE + LEFT_SIDE);
         }
@@ -360,7 +368,7 @@ Page test_page
             this.repeat = repeat;
 
             playback.device = sound_output_device;
-            clip.file = stimuli_dir() + "sounds/" + filename;
+            clip.file = filename;
             start(tref);
         }
 
@@ -398,7 +406,9 @@ Page test_page
                 control.start_clock(tref);
                 continue_timer.start(tref + item.duration);
                 control.show_light_icon(item.expected_look);
-                audio.play(item.audio_stimulus, t, false);
+                audio.abort();
+                if(item.audio_stimulus != "")
+                    audio.play(stimuli_dir() + "sounds/" + get_audio_file_directory() + item.audio_stimulus, t, false);
 
                 ignore_remaining_hits();
                 stop();
@@ -479,8 +489,8 @@ Page test_page
         layout.reset();
         layout.load_images();
 
-        // Show this page (if not yet done) and make tref the trial start time.
-        tref = test_window1.show_test_page(this, tref + INTERTRIAL_INTERVAL);
+        // Show this page (if not yet done)
+        test_window1.show_test_page(this, tref + INTERTRIAL_INTERVAL);
 
         // Reset response data.
         response.clear();
@@ -491,7 +501,7 @@ Page test_page
         // Start fixation symbol and stimulus.
         time stimonset = layout.start_middle_image(tref);
 
-        audio.play(ATTRACTOR_AUDIO, tref, true);
+        audio.play(stimuli_dir() + "sounds/" + ATTRACTOR_AUDIO, tref, true);
 
         // Response interval starts at stimulus onset. Timeout after 
         // RESPONSE_DURATION unless this duration is 0s or less.

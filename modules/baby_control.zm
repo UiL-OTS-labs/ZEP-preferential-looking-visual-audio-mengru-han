@@ -142,6 +142,9 @@ Page control
 
     on_event:key_press()
     {
+        if(input_key == ' ')
+            signal_target(CONTINUE);
+
         // See also ButtonBox object below.
         bool handled;
         if (input_modifiers == 0 && state >= CONTROL_RUNNING && 
@@ -278,7 +281,7 @@ Page control
                     font_size = 12;
                     line_pattern_color = color:white;
                     is_visible = true;
-                    text="Note: mirrored in recording perspective!";
+                    text="    Note: mirrored in recording perspective!";
                 }
             }
 
