@@ -54,8 +54,8 @@ Experiment experiment
     {
         on_event:entry()
         {
-            string first_item = expdb.participant.get_enum_field("first_famil_picture");
-            test::load_stimuli(stimuli_dir()+ first_item + "_familiarisation_items.csv");
+            test::load_stimuli(stimuli_dir()+ "familiarisation_items.csv");
+            test::shuffle_stimuli();
             test::action(this);
         }
     }

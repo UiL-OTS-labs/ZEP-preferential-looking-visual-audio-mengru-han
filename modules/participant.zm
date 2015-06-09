@@ -18,7 +18,6 @@ HISTORY:
 void create_participant_fields()
 {
 	expdb.participant.add_enum_field("condition", "ADS|IDS");
-	expdb.participant.add_enum_field("first_famil_picture", "ball|book");
 }
 
 
@@ -28,11 +27,6 @@ int check_participant_fields()
 	if (!expdb.participant.has_enum_field("condition") || (expdb.participant.get_enum_field("condition") != "ADS" && expdb.participant.get_enum_field("condition") != "IDS"))
 	{
 		print_error("Participant field 'conditon' needs to be set to either 'ADS' or 'IDS'!\n");
-		return ERROR;
-	} 
-	if (!expdb.participant.has_enum_field("first_famil_picture") || expdb.participant.get_enum_field("first_famil_picture") == "")
-	{
-		print_error("Participant field 'first_famil_picture' needs to be set to either 'ball' or 'book'!\n");
 		return ERROR;
 	} 
     return OK;
