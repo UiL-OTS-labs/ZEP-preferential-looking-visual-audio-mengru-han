@@ -18,6 +18,10 @@ HISTORY:
 void create_participant_fields()
 {
 	expdb.participant.add_enum_field("condition", "ADS|IDS");
+	expdb.participant.add_int_field("image_pair");
+	expdb.participant.add_int_field("target_image");
+	expdb.participant.add_enum_field("target_side", "LEFT|RIGHT");
+	expdb.participant.add_enum_field("target_word", "MODI|DOBOE");
 }
 
 
@@ -28,7 +32,27 @@ int check_participant_fields()
 	{
 		print_error("Participant field 'conditon' needs to be set to either 'ADS' or 'IDS'!\n");
 		return ERROR;
+	}
+	if (!expdb.participant.has_int_field("image_pair") || (expdb.participant.get_int_field("image_pair") != 1 && expdb.participant.get_int_field("image_pair") != 2))
+	{
+		print_error("Participant field 'image_pair' needs to be set to either 1 or 2!\n");
+		return ERROR;
 	} 
+	if (!expdb.participant.has_int_field("target_image") || (expdb.participant.get_int_field("target_image") != 1 && expdb.participant.get_int_field("target_image") != 2))
+	{
+		print_error("Participant field 'target_image' needs to be set to either 1 or 2!\n");
+		return ERROR;
+	} 
+	if (!expdb.participant.has_enum_field("target_side") || (expdb.participant.get_enum_field("target_side") != "LEFT" && expdb.participant.get_enum_field("target_side") != "RIGHT"))
+	{
+		print_error("Participant field 'target_side' needs to be set to either 'LEFT' or 'RIGHT'!\n");
+		return ERROR;
+	}
+	if (!expdb.participant.has_enum_field("target_word") || (expdb.participant.get_enum_field("target_word") != "MODI" && expdb.participant.get_enum_field("target_word") != "DOBOE"))
+	{
+		print_error("Participant field 'target_word' needs to be set to either 'MODI' or 'DOBOE'!\n");
+		return ERROR;
+	}
     return OK;
 }
 

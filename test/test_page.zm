@@ -280,11 +280,15 @@ Page test_page
         void load_images()
         {
             string image_path = stimuli_dir() + "images/";
+            int image_pair = expdb.participant.get_int_field("image_pair");
+
             if(item.left_side_image != "")
-                canvas.left_image.load(image_path + item.left_side_image);
+                canvas.left_image.load(image_path + image_pair + "_" + item.left_side_image);
+
             canvas.middle_image.load(image_path + ATTRACTOR_IMAGE);
+
              if(item.right_side_image != "")
-                canvas.right_image.load(image_path + item.right_side_image);
+                canvas.right_image.load(image_path +  image_pair + "_" + item.right_side_image);
         }
 
         time start_middle_image(time t)

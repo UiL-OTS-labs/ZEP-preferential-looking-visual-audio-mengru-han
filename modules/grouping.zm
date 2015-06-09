@@ -17,14 +17,7 @@ HISTORY:
 // Symbolic definition of groups.
 enum TestGroup
 {
-	LEFT1MODI,
-	LEFT1DOBOE,
-	RIGHT1MODI,
-	RIGHT1DOBOE,
-	LEFT2MODI,
-	LEFT2DOBOE,
-	RIGHT2MODI,
-	RIGHT2DOBOE
+	None
 }
 
 
@@ -37,5 +30,9 @@ int assign_participant_to_group()
 
 string get_test_items_directory()
 {
-	return stimuli_dir() + string(selected_group) + "/";
+	string target_side = expdb.participant.get_enum_field("target_side");
+	int target_image = expdb.participant.get_int_field("target_image");
+	string target_word = expdb.participant.get_enum_field("target_word");
+
+	return stimuli_dir() + target_side + target_image +  target_word + "/";
 }
