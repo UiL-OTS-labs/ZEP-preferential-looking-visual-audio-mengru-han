@@ -406,10 +406,12 @@ Page test_page
                 rt = int(reaction_time(0));
 
                 time tref = layout.stop_middle_image(t+TIME_BUFFER_FOR_PROCESSING);
+                
                 layout.start_side_images(tref);
-                control.start_clock(tref);
+                cue_timer.start(tref+DELAY_CUE);
                 continue_timer.start(tref + item.duration);
-                control.show_light_icon(item.expected_look);
+
+
                 audio.abort();
                 if(item.audio_stimulus != "")
                     audio.play(stimuli_dir() + "sounds/" + get_audio_file_directory() + item.audio_stimulus, t, false);
@@ -424,6 +426,15 @@ Page test_page
         }
     }
 
+    Timer cue_timer
+    {
+        on_event:expire()
+        {
+            control.start_clock(event_time);
+            control.show_light_icon(item.expected_look);
+        }
+    }
+
     Timer continue_timer
     {
         on_event:expire()
@@ -432,7 +443,10 @@ Page test_page
             if(frame_end == 0)
                 done(CONTINUE);
             else
+            {
+                control.hide_light_icon(item.expected_look);
                 continue_timer_after_finish_animations.start(display_device.frame_time(frame_end) + POST_FINISH_ANIMATION_DELAY);
+            }
         }
     }
 

@@ -6,6 +6,7 @@ const dur RESPONSE_DURATION = 0ms;
 const dur POST_FINISH_ANIMATION_DELAY = 500ms;
 
 const int DISTANCE_IMAGES_PX = 600;
+const dur DELAY_CUE = 2s;
 
 const dur TIME_BUFFER_FOR_PROCESSING = 10ms;
 
