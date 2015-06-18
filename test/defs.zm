@@ -5,8 +5,13 @@ const dur RESPONSE_DURATION = 0ms;
 
 const dur POST_FINISH_ANIMATION_DELAY = 500ms;
 
-const int DISTANCE_IMAGES_PX = 600;
+const int DISTANCE_IMAGES_PX = 550;
 const dur DELAY_CUE = 2s;
+
+const int IMAGE_SIZE_PX = 200;
+
+const int ATTRACTOR_WIDTH_PX = 160;
+const int ATTRACTOR_HEIGHT_PX = 120;
 
 const dur TIME_BUFFER_FOR_PROCESSING = 10ms;
 
