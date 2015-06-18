@@ -76,8 +76,8 @@ Page test_page
                 {
                     image = filepath;
     
-                    width = floor(image_width);
-                    height = floor(image_height);
+                    width = floor(IMAGE_SIZE_PX);
+                    height = floor(IMAGE_SIZE_PX);
                     calculate_offset();
                     x = -DISTANCE_IMAGES_PX;
                 }
@@ -144,8 +144,8 @@ Page test_page
                 {
                     image = filepath;
     
-                    width = floor(image_width/3);
-                    height = floor(image_height/3);
+                    width = floor(ATTRACTOR_WIDTH_PX);
+                    height = floor(ATTRACTOR_HEIGHT_PX);
                     calculate_offset();
                 }
 
@@ -221,8 +221,8 @@ Page test_page
                 {
                     image = filepath;
     
-                    width = floor(image_width);
-                    height = floor(image_height);
+                    width = floor(IMAGE_SIZE_PX);
+                    height = floor(IMAGE_SIZE_PX);
                     calculate_offset();
                     x = DISTANCE_IMAGES_PX;
                 }
