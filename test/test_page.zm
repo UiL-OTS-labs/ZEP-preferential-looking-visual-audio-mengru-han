@@ -519,7 +519,7 @@ Page test_page
         // Start fixation symbol and stimulus.
         time stimonset = layout.start_middle_image(tref);
 
-        audio.play(stimuli_dir() + "sounds/" + ATTRACTOR_AUDIO, tref, true);
+        audio.play(stimuli_dir() + "sounds/" + ATTRACTOR_AUDIO, stimonset, true);
 
         // Response interval starts at stimulus onset. Timeout after 
         // RESPONSE_DURATION unless this duration is 0s or less.
