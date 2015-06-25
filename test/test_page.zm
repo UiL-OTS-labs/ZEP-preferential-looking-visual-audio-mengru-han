@@ -518,12 +518,14 @@ Page test_page
 
         // Start fixation symbol and stimulus.
         time stimonset = layout.start_middle_image(tref);
-
+        
+         // Response interval starts at stimulus onset. Timeout after 
+        // RESPONSE_DURATION unless this duration is 0s or less.
+        response.start(stimonset+100ms);
+        
         audio.play(stimuli_dir() + "sounds/" + ATTRACTOR_AUDIO, stimonset, true);
 
-        // Response interval starts at stimulus onset. Timeout after 
-        // RESPONSE_DURATION unless this duration is 0s or less.
-        response.start(stimonset);
+       
 
         // Enable button-box buttons 0 and 1 for resp. no(0) and yes(1).
         control.target = this;
