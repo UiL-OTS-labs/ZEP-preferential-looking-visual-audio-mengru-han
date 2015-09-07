@@ -106,6 +106,7 @@ Experiment experiment
     {
         on_event:entry()
         {
+            test::test_page.enter_2s_delay = true;
             test::load_stimuli(get_test_items_directory()+"test1_items.csv");
             test::shuffle_stimuli();
             test::action(this);
@@ -124,6 +125,7 @@ Experiment experiment
     {
         on_event:entry()
         {
+            test::test_page.enter_2s_delay = false;
             test::load_stimuli(get_test_items_directory()+"reminder_items.csv");
             test::shuffle_stimuli();
             test::action(this);
@@ -142,6 +144,7 @@ Experiment experiment
     {
         on_event:entry()
         {
+            test::test_page.enter_2s_delay = false;
             test::load_stimuli(get_test_items_directory()+"test2_items.csv");
             test::shuffle_stimuli();
             test::action(this);

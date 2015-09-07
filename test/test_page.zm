@@ -20,7 +20,7 @@ import animation_utility;
 Page test_page
 {
     TestItem    item;           // trial control parameters
-
+    bool enter_2s_delay = false;
 
     init()
     {
@@ -413,6 +413,11 @@ Page test_page
 
 
                 audio.abort();
+                if (enter_2s_delay)
+                {
+                    t += 2s;
+                }
+                
                 if(item.audio_stimulus != "")
                     audio.play(stimuli_dir() + "sounds/" + get_audio_file_directory() + item.audio_stimulus, t, false);
 
