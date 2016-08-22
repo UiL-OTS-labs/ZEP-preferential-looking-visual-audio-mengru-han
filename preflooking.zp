@@ -1,4 +1,4 @@
-requires 1.10;
+requires 1.12;
 
 import baby_windows1;
 import std_entry_page1;
