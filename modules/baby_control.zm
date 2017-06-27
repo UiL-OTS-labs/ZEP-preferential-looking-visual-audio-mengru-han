@@ -5,7 +5,7 @@ ADAPTED BY:     -
 
 DESCRIPTION:
 
-Provides the experiment control page for babylab experiments. It contains a 
+Provides the experiment control page for babylab experiments. It contains a
 canvas area (for displaying symbols representing lights and speakers and a
 counter), an information area and a row of buttons.
 
@@ -98,9 +98,9 @@ record ExperimentSettings
     // ID of default researcher.
     string      default_researcher_id;
 
-    // Whether experiment record, researcher record and group record should 
-    // be checked out for updating (true) or reading only (false) during the 
-    // experiment session. The participant record and experiment session 
+    // Whether experiment record, researcher record and group record should
+    // be checked out for updating (true) or reading only (false) during the
+    // experiment session. The participant record and experiment session
     // record are always checked out for updating.
     bool        experiment_record_updateable;
     bool        researcher_record_updateable;
@@ -147,7 +147,7 @@ Page control
 
         // See also ButtonBox object below.
         bool handled;
-        if (input_modifiers == 0 && state >= CONTROL_RUNNING && 
+        if (input_modifiers == 0 && state >= CONTROL_RUNNING &&
             keymap.size > 0 && target != null)
         {
             int i = find_key(int(input_key));
@@ -472,7 +472,7 @@ Page control
                 }
             }
 
-          
+
         }
 
 
@@ -1181,7 +1181,7 @@ Page control
             if (ncycles > 1)
             {
                 layout.partnames[n].text = experiment.level_part_name(m) + ":";
-                layout.partvalues[n].text = 
+                layout.partvalues[n].text =
                     string(cycle+1) + "/" + string(ncycles);
             }
             else if (ncycles < 0)
@@ -1212,7 +1212,7 @@ Page control
         	if (ncycles > 1)
         	{
                     layout.partnames[n].text = subexp.level_part_name(m) + ":";
-                    layout.partvalues[n].text = 
+                    layout.partvalues[n].text =
                 	string(cycle+1) + "/" + string(ncycles);
         	}
         	else if (ncycles < 0)
@@ -1277,7 +1277,7 @@ Page control
     }
 
 
-    ButtonBox button_box
+    BeexyBox button_box
     {
         dur     framedur;       // animation interval
         int     sectionmask;    // which LEDs (9 bits) should be affected
@@ -1298,7 +1298,7 @@ Page control
 
         on_event:press()
         {
-            if (state >= CONTROL_RUNNING && btnmap.size > 0 && 
+            if (state >= CONTROL_RUNNING && btnmap.size > 0 &&
                 control.target != null)
             {
                 int i = find_button(input_button);
@@ -1403,7 +1403,7 @@ Page control
         {
             on_event:expire()
             {
-                button_box.output(button_box.pattern[button_box.patternindex] & 
+                button_box.output(button_box.pattern[button_box.patternindex] &
                     button_box.sectionmask);
                 if (++button_box.patternindex == button_box.pattern.size)
                     button_box.patternindex = 0;
@@ -1448,7 +1448,7 @@ Page control
     {
         if (dblockcount < 0) return OK;         // Master lock in effect.
 
-        if (dblockcount > 0) 
+        if (dblockcount > 0)
         {
             dblockcount++;
             return OK;
@@ -1489,7 +1489,7 @@ Page control
         if (err) return ERROR;
 
         // Check if researcher record exists.
-        if (expdb.researcher_exists(id)) 
+        if (expdb.researcher_exists(id))
             err = 1;
 
         // Unlock the database.
@@ -1506,7 +1506,7 @@ Page control
         if (err) return err;
 
         // Add researcher record if not yet done.
-        if (!expdb.researcher_exists(id)) 
+        if (!expdb.researcher_exists(id))
             err = expdb.add_researcher(id);
         else if (failifexists)
             err = ERROR;
@@ -1527,12 +1527,12 @@ Page control
         if (err) return err;
 
         // Checkout researcher record for desired mode.
-        if (!expdb.researcher_exists(id)) 
+        if (!expdb.researcher_exists(id))
         {
             err = ERROR;
             if (verbose)
             {
-                ctrl_window.show_error("Researcher record \"" + id + 
+                ctrl_window.show_error("Researcher record \"" + id +
                     "\" doesn't exist.");
             }
         }
@@ -1575,7 +1575,7 @@ Page control
         }
 
         int err = checkout_researcher(id, true);
-        if (!err) 
+        if (!err)
         {
             resid = expdb.researcher.id;
             layout.info1.researcher.text = resid;
@@ -1590,7 +1590,7 @@ Page control
         return err;
     }
 
-    
+
     //--------------------------------------------------------------------------
 
 
@@ -1601,7 +1601,7 @@ Page control
         if (err) return ERROR;
 
         // Check if participant record exists.
-        if (expdb.participant_exists(id)) 
+        if (expdb.participant_exists(id))
             err = 1;
 
         // Unlock the database.
@@ -1618,7 +1618,7 @@ Page control
         if (err) return err;
 
         // Add participant record if not yet done.
-        if (!expdb.participant_exists(id)) 
+        if (!expdb.participant_exists(id))
             err = expdb.add_participant(id);
         else if (failifexists)
             err = ERROR;
@@ -1639,12 +1639,12 @@ Page control
         if (err) return err;
 
         // Checkout participant record for desired mode.
-        if (!expdb.participant_exists(id)) 
+        if (!expdb.participant_exists(id))
         {
             err = ERROR;
             if (verbose)
             {
-                ctrl_window.show_error("Participant record \"" + id + 
+                ctrl_window.show_error("Participant record \"" + id +
                     "\" doesn't exist.");
             }
         }
@@ -1681,7 +1681,7 @@ Page control
     int get_participant_info(string id)
     {
         int err = checkout_participant(id, true);
-        if (!err) 
+        if (!err)
         {
             ppid = expdb.participant.id;
             layout.info1.participant.text = ppid;
@@ -1695,8 +1695,8 @@ Page control
 
         return err;
     }
-    
-    
+
+
     //--------------------------------------------------------------------------
 
 
@@ -1707,7 +1707,7 @@ Page control
         if (err) return err;
 
         // Add experiment record if not yet done.
-        if (!expdb.experiment_exists(script_name())) 
+        if (!expdb.experiment_exists(script_name()))
             err = expdb.add_experiment(script_name());
 
         // Unlock the database.
@@ -1771,7 +1771,7 @@ Page control
             group = firstgroup;
             while (true) {
                 string groupname = string(group);
-                if (!expdb.experiment.group_exists(groupname) && 
+                if (!expdb.experiment.group_exists(groupname) &&
                         expdb.experiment.add_group(groupname) != OK)
                     err = ERROR;
                 if (++group == firstgroup) break;   // Break if all done.
@@ -1808,7 +1808,7 @@ Page control
         {
             layout.info1.expstatus.text = "-";
         }
-            
+
         // Unlock the database.
         unlock_database();
 
@@ -1860,9 +1860,9 @@ Page control
         }
 
 
-        // If no participant specified and experiment status is PREPARING 
+        // If no participant specified and experiment status is PREPARING
         // then substitute 'dummy'.
-        if (!is_valid_alphanum(ppid) && 
+        if (!is_valid_alphanum(ppid) &&
                 expdb.experiment.status == EXP_STATUS_PREPARING)
         {
             create_participant("dummy", false);
@@ -1880,7 +1880,7 @@ Page control
 
         // Checkout researcher record.
         err = checkout_researcher(resid, !RESEARCHER_RECORD_UPDATEABLE, true);
-        if (err) 
+        if (err)
         {
             checkin_experiment();
             return ERROR;
@@ -1888,7 +1888,7 @@ Page control
 
         // Check researcher record fields.
         err = check_researcher_fields();
-        if (err) 
+        if (err)
         {
             checkin_researcher();
             checkin_experiment();
@@ -1901,7 +1901,7 @@ Page control
         // Checkout participant record for updating. This assures that a
         // participant can only take part in one session at a time.
         err = checkout_participant(ppid, false, true);
-        if (err) 
+        if (err)
         {
             checkin_researcher();
             checkin_experiment();
@@ -1913,7 +1913,7 @@ Page control
 	if (expdb.experiment.status != EXP_STATUS_PREPARING || ppid != "dummy")
 	{
             err = check_participant_fields();
-            if (err) 
+            if (err)
             {
         	checkin_participant();
         	checkin_researcher();
@@ -1930,7 +1930,7 @@ Page control
             err = select_group_specified();
         else
             err = assign_participant_to_group();
-        if (err) 
+        if (err)
         {
             checkin_participant();
             checkin_researcher();
@@ -1946,9 +1946,9 @@ Page control
     int checkout_session_part2()
     {
         // Checkout group record.
-        int err = expdb.experiment.checkout_group(string(selected_group), 
+        int err = expdb.experiment.checkout_group(string(selected_group),
             !GROUP_RECORD_UPDATEABLE);
-        if (err) 
+        if (err)
         {
             checkin_participant();
             checkin_researcher();
@@ -1963,7 +1963,7 @@ Page control
 
         // Perform pre-session setup.
         err = setup_pre_session();
-        if (err) 
+        if (err)
         {
             expdb.experiment.checkin_group();
             checkin_participant();
@@ -1975,7 +1975,7 @@ Page control
 
         // Create new experiment session record.
         err = expdb.experiment.checkout_new_session(EXPERIMENT_VERSION);
-        if (err) 
+        if (err)
         {
             expdb.experiment.checkin_group();
             checkin_participant();
@@ -1987,7 +1987,7 @@ Page control
 
         // Perform session setup.
         err = setup_session();
-        if (err) 
+        if (err)
         {
             int sesid = expdb.experiment.session.id;
             expdb.experiment.checkin_session(SESSION_STATUS_FAILED);
@@ -2126,7 +2126,7 @@ Page control
         if (abort && state == CONTROL_RUNNING)
             state = CONTROL_ABORTED;
 
-        if (state == CONTROL_RUNNING || 
+        if (state == CONTROL_RUNNING ||
             state == CONTROL_ABORTED)
         {
             int err = master_lock_database();
@@ -2159,10 +2159,10 @@ Page control
 
     int quit_experiment()
     {
-        if (state != CONTROL_IDLE && 
-            state != CONTROL_READY && 
-            state != CONTROL_RUNNING && 
-            state != CONTROL_ABORTED && 
+        if (state != CONTROL_IDLE &&
+            state != CONTROL_READY &&
+            state != CONTROL_RUNNING &&
+            state != CONTROL_ABORTED &&
             state != CONTROL_FINISHED) return ERROR;
 
         if (state == CONTROL_RUNNING)
@@ -2191,7 +2191,7 @@ Page control
 
         // Open the database. Will stay open until script termination or
         // end_experiment().
-        if (expdb.open(script_dir() + DATABASE_DIR, DATABASE_NUMBER) != OK) 
+        if (expdb.open(script_dir() + DATABASE_DIR, DATABASE_NUMBER) != OK)
             return ERROR;
 
         // Create experiment if not yet done.
@@ -2263,11 +2263,11 @@ Page control
         showoutlines = b;
         if (!showoutlines)
         {
-            layout.canvas.front_light_icon.is_visible = 
+            layout.canvas.front_light_icon.is_visible =
                 (lightsmask & FRONT_SIDE) ? true : false;
-            layout.canvas.left_light_icon.is_visible = 
+            layout.canvas.left_light_icon.is_visible =
                 (lightsmask & LEFT_SIDE) ? true : false;
-            layout.canvas.right_light_icon.is_visible = 
+            layout.canvas.right_light_icon.is_visible =
                 (lightsmask & RIGHT_SIDE) ? true : false;
         }
         else
@@ -2293,13 +2293,13 @@ Page control
         }
 
         if (mask & FRONT_SIDE)
-            layout.canvas.front_light_icon.fill_pattern_color = 
+            layout.canvas.front_light_icon.fill_pattern_color =
                 CONTROL_FRONT_LIGHT_COLOR;
         if (mask & LEFT_SIDE)
-            layout.canvas.left_light_icon.fill_pattern_color = 
+            layout.canvas.left_light_icon.fill_pattern_color =
                 CONTROL_SIDE_LIGHT_COLOR;
         if (mask & RIGHT_SIDE)
-            layout.canvas.right_light_icon.fill_pattern_color = 
+            layout.canvas.right_light_icon.fill_pattern_color =
                 CONTROL_SIDE_LIGHT_COLOR;
     }
 
